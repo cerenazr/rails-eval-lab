@@ -31,3 +31,13 @@ puts "Biraz zaman alabilir, #{200} kullanıcı ve ilişkileri (profile, post, co
 end
 
 puts "Seeded #{User.count} users, #{Profile.count} profiles, #{Post.count} posts, #{Comment.count} comments"
+
+Challenge.create!(
+  slug: "n_plus_one_dashboard",
+  title: "Dashboard N+1 Katliamı",
+  description: "Kullanıcı dashboard'u binlerce SQL sorgusu çalıştırıyor. Düzelt.",
+  baseline_queries: 1051,
+  baseline_time_ms: 1150.00,
+  credit_cost: 5
+)
+puts "Seeded 1 Challenge (baseline: 1051 queries, 1150ms)."
