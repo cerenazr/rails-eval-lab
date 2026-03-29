@@ -32,7 +32,7 @@ Tek fark: burada agent sen değilsin — **sen düşünen insansın.** AI agent 
 
 ```bash
 # GitHub'dan fork et, sonra:
-git clone https://github.com/<SENIN-KULLANICIN>/rails-eval-lab.git
+git clone https://github.com/seyyah/rails-eval-lab.git
 cd rails-eval-lab
 ```
 
