@@ -30,9 +30,10 @@ Tek fark: burada agent sen değilsin — **sen düşünen insansın.** AI agent 
 
 ### 1. Fork & Clone
 
+**GitHub'da fork butonuna bas** (sağ üst köşe) — kendi fork'una çalışacaksın, doğrudan bu repo'ya değil.
+
 ```bash
-# GitHub'dan fork et, sonra:
-git clone https://github.com/seyyah/rails-eval-lab.git
+git clone https://github.com/KULLANICI_ADIN/rails-eval-lab.git
 cd rails-eval-lab
 ```
 
@@ -147,6 +148,61 @@ Bu Karpathy'nin "keep/revert ratchet loop"u — sadece iyileştirmeleri tut, ger
 
 ---
 
+## Resmi Submission (Leaderboard)
+
+Local iterasyonun bitince en iyi versiyonunu resmi olarak gönder. Puanın otomatik ölçülür ve [Leaderboard](https://github.com/seyyah/rails-eval-lab/blob/leaderboard/LEADERBOARD.md)'a eklenir.
+
+### Submission Akışı
+
+```
+1. Local'de en iyi skoruna ulaş (rails dojo:run ile)
+2. Değişikliğini fork'una push et
+3. Bu repoya (seyyah/rails-eval-lab) submissions branch'ine PR aç
+4. GitHub Actions otomatik çalışır (~2 dakika)
+5. PR'a skor kartı düşer, leaderboard güncellenir
+```
+
+### PR Nasıl Açılır?
+
+```bash
+# Fork'undaki branch'ini push et
+git push origin main   # veya çalıştığın branch adı
+
+# GitHub'da:
+# github.com/seyyah/rails-eval-lab → Pull requests → New pull request
+# base: submissions  ←  compare: KULLANICI_ADIN:main
+```
+
+> **base branch `submissions` olmalı** — `main`'e değil!
+
+### CI Neyi Ölçer?
+
+- Scoring kodu tamamen ana repo'dan gelir (senin değiştiremeyeceğin)
+- Sadece `user_data_fetcher.rb` fork'undan alınır
+- Scorer **3 kez** çalışır, **medyan süre** kullanılır (makine farklılıklarını yumuşatır)
+- Puanlama CI runner'ında (`ubuntu-latest`) standardize — herkes aynı ortamda
+
+### PR Comment Örneği
+
+```
+🏆 Evaluation Result — @kullanici_adin
+
+| Metrik    | Baseline | Sonuç | İyileşme      |
+|-----------|----------|-------|---------------|
+| Queries   | 1199     | ✅ 4  | ▼ 99.7%       |
+| Süre (ms) | 2010     | ✅ 124| ▼ 93.8%       |
+
+Toplam: 87.95 / 90
+```
+
+### Notlar
+
+- Birden fazla PR açabilirsin — leaderboard'da **en iyi skor** tutulur
+- Local `rails dojo:run` skoru ile CI skoru yakın ama aynı olmayabilir (süre farkı normaldir)
+- CI'da stability bonusu uygulanmaz (max 90 puan)
+
+---
+
 ## Dosya Yapısı
 
 ```
@@ -167,9 +223,12 @@ Bu Karpathy'nin "keep/revert ratchet loop"u — sadece iyileştirmeleri tut, ger
 ├── db/
 │   ├── seeds.rb                            # Deterministik test verisi
 │   └── migrate/                            # Schema tanımları
-└── lib/
-    └── tasks/
-        └── dojo.rake                       # CLI komutları
+├── lib/
+│   └── tasks/
+│       └── dojo.rake                       # CLI komutları
+└── script/
+    ├── ci_eval.rb                          # CI evaluation scripti (dokunma)
+    └── update_leaderboard.rb               # Leaderboard güncelleyici (dokunma)
 ```
 
 ---
